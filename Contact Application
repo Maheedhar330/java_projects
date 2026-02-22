@@ -1,0 +1,184 @@
+A simple Contact Book Application built using Java.
+This project allows users to Add, View, Update, and Delete contacts through a console-based menu system.
+Code:
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Contact {
+    private String name;
+    private String number;
+    private String email;
+
+    public Contact(String name, String number, String email) {
+        this.name = name;
+        this.number = number;
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Name   : " + name + "\n" +
+               "Number : " + number + "\n" +
+               "Email  : " + email;
+    }
+}
+
+public class ContactManager {
+    
+    private static final Scanner scanner = new Scanner(System.in);
+    private static List<Contact> contacts = new ArrayList<>();
+
+    static {
+        // Initial data (same as your Python example)
+        contacts.add(new Contact("vishnu", "9879743210", "vishnu@gmail.com"));
+        contacts.add(new Contact("krishna", "9452732564", "krishna@gmail.com"));
+        contacts.add(new Contact("ramu", "9653741568", "ramu@mail.com"));
+    }
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n--- Contact Book ---");
+            System.out.println("a → Add contact");
+            System.out.println("o → Open/View contact");
+            System.out.println("u → Update contact");
+            System.out.println("d → Delete contact");
+            System.out.println("q → Quit");
+            System.out.print("Your choice: ");
+
+            String action = scanner.nextLine().trim().toLowerCase();
+
+            switch (action) {
+                case "a":
+                    addContact();
+                    showContacts();
+                    break;
+
+                case "o":
+                    openContact();
+                    break;
+
+                case "u":
+                    updateContact();
+                    showContacts();
+                    break;
+
+                case "d":
+                    deleteContact();
+                    showContacts();
+                    break;
+
+                case "q":
+                    System.out.println("Exiting the program. Goodbye!");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Incorrect choice, please try again.");
+            }
+        }
+    }
+
+    private static void showContacts() {
+        if (contacts.isEmpty()) {
+            System.out.println("\nNo contacts available.");
+            return;
+        }
+        System.out.println("\n--- All Contacts ---");
+        for (Contact c : contacts) {
+            System.out.println("\n" + c);
+        }
+    }
+
+    private static void addContact() {
+        System.out.print("Enter name   : ");
+        String name = scanner.nextLine().trim();
+
+        System.out.print("Enter number : ");
+        String number = scanner.nextLine().trim();
+
+        System.out.print("Enter email  : ");
+        String email = scanner.nextLine().trim();
+
+        contacts.add(new Contact(name, number, email));
+        System.out.println("Contact added successfully!");
+    }
+
+    private static void openContact() {
+        System.out.print("Enter name to open: ");
+        String name = scanner.nextLine().trim();
+
+        for (Contact c : contacts) {
+            if (c.getName().equalsIgnoreCase(name)) {
+                System.out.println("\n" + c);
+                return;
+            }
+        }
+        System.out.println("Contact not found.");
+    }
+
+    private static void updateContact() {
+        System.out.print("Enter name to update: ");
+        String name = scanner.nextLine().trim();
+
+        for (Contact c : contacts) {
+            if (c.getName().equalsIgnoreCase(name)) {
+                System.out.print("Enter new name   : ");
+                String newName = scanner.nextLine().trim();
+
+                System.out.print("Enter new number : ");
+                String newNumber = scanner.nextLine().trim();
+
+                System.out.print("Enter new email  : ");
+                String newEmail = scanner.nextLine().trim();
+
+                c.setName(newName);
+                c.setNumber(newNumber);
+                c.setEmail(newEmail);
+
+                System.out.println("Contact updated successfully.");
+                return;
+            }
+        }
+        System.out.println("Contact not found.");
+    }
+
+    private static void deleteContact() {
+        System.out.print("Enter name to delete: ");
+        String name = scanner.nextLine().trim();
+
+        for (int i = 0; i < contacts.size(); i++) {
+            if (contacts.get(i).getName().equalsIgnoreCase(name)) {
+                contacts.remove(i);
+                System.out.println("Contact deleted successfully.");
+                return;
+            }
+        }
+        System.out.println("Contact not found.");
+    }
+}
